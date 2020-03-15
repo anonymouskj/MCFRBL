@@ -711,6 +711,9 @@
 <action name="shellStage" class="ACTION.ShellStage" method="getshellStageDetails">
 			<result name="success" type="json"/>
 		</action>
+<action name="coachtypeclearance" class="ACTION.coachtypeclearance" method="getcoachDetails">
+			<result name="success" type="json"/>
+		</action>
 <action name="interval" class="ACTION.Interval" method="getintervalDetails">
 <result name="success" type="json" />
 </action>
@@ -1667,4 +1670,6 @@
 		</action>
 	</package>
 		
-<constant name="struts.action.excludePattern" value="/frameset*,/run*,/preview*,/download*,/parameter*,/document*,/output*,/extract*,/
+<constant name="struts.action.excludePattern" value="/frameset*,/run*,/preview*,/download*,/parameter*,/document*,/output*,/extract*,/RetrieveImage,/myServlet,/emp_dp_add_do,/http*,/http://10.60.201.247*,//10.60.201.247*,/rest/[a-zA-Z_0-9]*/[a-zA-Z_0-9]* "/>	
+
+</struts>

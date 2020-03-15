@@ -466,6 +466,9 @@
 <definition name="/ShellStage.tiles" extends="baseLayout">
 	<put-attribute name="body" value="/ShellStage.jsp"/>
 	</definition>	
+	<definition name="/furnishingstagescompleted.tiles" extends="baseLayout">
+	<put-attribute name="body" value="/coachclearance.jsp"/>
+	</definition>
 <definition name="/interval.tiles" extends="baseLayout">
 	<put-attribute name="body" value="/intervalfind.jsp"/>
 	</definition>	
