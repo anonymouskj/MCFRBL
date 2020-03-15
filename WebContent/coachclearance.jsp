@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-    <%@page import="ACTION.ShellStage"%>
+    <%@page import="ACTION.coachtypeclearance"%>
    <%@ page import ="java.util.*"%>
    <%@ page import="java.sql.*" %>
    <%@page import="beans.TestingMobileClearance" %>
@@ -11,22 +11,23 @@
 <title>Insert title here</title>
 </head>
 <body>
-<% ShellStage s=new ShellStage();
-s.getshellStageDetails();
-List<String>substagei=s.getSubstageDescList2();
+<h1 style="font-size:25px;color:SlateBlue; margin-left:20px;"> Enter CoachType :</h1>
+<% coachtypeclearance s=new coachtypeclearance();
+s.getcoachDetails();
+List<String>substagei=s.getCoachtypelist();
 %>
 <div class="Custom" style="margin-bottom:20px;margin-left:20px;">
 <select id="dropdown" style="font-size:17px; background-color:F7F1EF;">
 <option><b>Select:</b></option><% 
  
 for(String i:substagei) {%>
-<option value="<%=i%>"><%=i %></option>
+<option value="<%=i%>"><%=i%></option>
 <% 
 }
 %>
 </select>
 </div>
- <br><input type="submit"  value="Confirm" name="SUBMIT" class="submitBtn" id="submitBtn" onClick="return shellStages()" style="margin-left:120px;margin-bottom:40px;">
+ <br><input type="submit"  value="Confirm" name="SUBMIT" class="submitBtn" id="submitBtn" onClick="return coachtypedetails()" style="margin-left:120px;margin-bottom:40px;">
  
 <script>
 
@@ -34,15 +35,15 @@ function goBack() {
   window.history.back();
 }
 
-function shellStages(){
-	var stageDesc= $('#dropdown').find(":selected").text();
+function coachtypedetails(){
+	var coachtype= $('#dropdown').find(":selected").text();
 	console.log("received broadcast: " + ", " +stageDesc);
 	//var stage=$('input[id=stage]').val();
 	//var stageDesc=stage.toUpperCase();
 
-    var formdata={stageDesc:stageDesc};
+    var formdata={coachtype:coachtype};
 	$.ajax({
-		url:"shellStage",
+		url:"coachtypeclearance",
 		type:'POST',
 		data:formdata,
 	   success: function(data){
