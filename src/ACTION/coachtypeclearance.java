@@ -32,7 +32,7 @@ public class coachtypeclearance {
 				 results = query1.list();
 				 coachtypelist=new ArrayList<String>();
 				 for(int s1=0;s1<results.size();s1++)
-				 {    
+				 {   
 					 String description=results.get(s1);
 					 coachtypelist.add(description);
 				 }
