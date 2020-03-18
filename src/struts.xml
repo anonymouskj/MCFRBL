@@ -711,7 +711,7 @@
 <action name="shellStage" class="ACTION.ShellStage" method="getshellStageDetails">
 			<result name="success" type="json"/>
 		</action>
-<action name="coachtypeclearance" class="ACTION.coachtypeclearance" method="getcoachDetails">
+<action name="coachtypeclearance" class="ACTION.coachtypeclearance" method="getcoachDetails1">
 			<result name="success" type="json"/>
 		</action>
 <action name="interval" class="ACTION.Interval" method="getintervalDetails">
