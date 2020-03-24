@@ -10,6 +10,40 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
 </head>
+<style>
+.Custom{
+ position: relative;
+ font-family: Arial;
+ box-sizing: border-box;
+   padding-left:2px;}
+   
+   .Custom-select select {
+  display: none; 
+}
+
+.select-selected {
+  background-color: white;
+}
+.submitBtn:hover {
+  background-color:#5555;
+  color: white;
+  
+}
+
+input[type=submit] {
+  background-color: SlateBlue;
+  color: white;
+  cursor: pointer;
+  align:center;
+  font-size: 15px;
+  border-radius: 10px;
+  padding: 6px;
+}
+.submitBtn{
+	margin-left:10px;
+	outline:none;
+}
+</style>
 <body>
 <h1 style="font-size:25px;color:SlateBlue; margin-left:20px;"> Enter CoachType :</h1>
 <%System.out.println("coachclearanace"); 
@@ -40,7 +74,7 @@ function goBack() {
 
 function coachtypedetails(){
 	var Coachtype= $('#dropdown').find(":selected").text();
-	console.log("received broadcast: " + ", " +Coachtype);
+	//console.log("received broadcast: " + ", " +Coachtype);
 	//var stage=$('input[id=stage]').val();
 	//var stageDesc=stage.toUpperCase();
 
@@ -50,35 +84,123 @@ function coachtypedetails(){
 		type:'POST',
 		data:formdata,
 	   success: function(data){ 
-		    if(data.stagedesclist.length!=0 && data.furnishingnumberList.length!=0){
+		    //if(data.stagedesclist.length!=0 && data.furnishingnumberList.length!=0){
 		    	
-		    var $table  =  $('<table style="margin-left:20px;"border="2px solidblack"></table>');
+	   /*  var $table  =  $('<table style="margin-left:20px;"border="2px solidblack"></table>');
 		   var $tr =  $('<tr style="padding-left:5px;padding-right:5px;"> </tr>');
-		   var $td0 =  $('<td><b>FURNISHING NO:</td>');
-		   $tr.append($td0);
-		   $table.append($tr);
-		 for(var i in data.stagedesclist){
+		   var $th0 =  $('<th>FURNISHING NO:</th>');
+		   $tr.append($th0);
+		   //$table.append($tr);
+		 for(var i in data.substagestagedesclist){
 		 var $th=$('<th  style="padding-left:5px;padding-right:5px;"> </th>');
 		// var $td =  $('<td> </td>');
-		 $th.append(data.stagedesclist[i]);
+		 $th.append(data.substagestagedesclist[i]);
 		 $tr.append($th);
-		  $table.append($tr);
+		 // $table.append($tr);
 		   }
+		 $table.append($tr);
 		 
-		 for(var i in data.furnishingnumberList){
+		 
+		
+	 for(var p in data.furnishingnumberList){
 			 var $tr =  $('<tr></tr>');
-		 var $td =  $('<td> </td>');
-			 $td.append(data.furnishingnumberList[i]);
+		 var $td =  $('<td></td>');
+			 $td.append(data.furnishingnumberList[p]);
 			 $tr.append($td);
-			  $table.append($tr);
-			   }
-		   
+			//  $table.append($tr);
+			   //} 
+		    
+		   ///tried something not working
+		    
+		for(var i in data.substagestagedesclist) {
+			//for(var j in data.furnishingnumberList){
+				// var $tr =  $('<tr></tr>');
+			
+				for(var k in data.stageList){
+					 var $td =  $('<td></td>');
+					if(data.stageList[k]==data.substagestagedesclist[i]){
+						 if(data.testingstatusList[k]=="not_ok"){
+							$td.append("N");
+					}
+						 else 
+							 $td.append("Y");
+			}
+				else {
+					$td.append("N");
+				}
+					          
+					    
+					$tr.append($td);
+			}
+				//$tr.append($td);
+				
+		//}
+			//$table.append($tr);
+	}
+		$table.append($tr);
+} */
+	//it 
+	if(data.substagestagedesclist.length!=0 && data.furnishingnumberList.length!=0){
+		  var $table  =  $('<table style="margin-left:20px;"border="2px solidblack"></table>');
+		    var $tr =  $('<tr style="padding-left:5px;padding-right:5px;"> </tr>');
+		    var $th0 =  $('<th>FURNISHING NO:</th>');
+			 $tr.append($th0);
+			   //$table.append($tr);
+			 for(var i in data.substagestagedesclist){
+			 var $th=$('<th  style="padding-left:5px;padding-right:5px;"> </th>');
+			 $th.append(data.substagestagedesclist[i]);
+			 $tr.append($th);
+			 }
+			 $table.append($tr);
+			 
+			 
+	   for(var i in data.furnishingnumberList){
+				  var $tr =  $('<tr></tr>');
+			      var $th0 =  $('<th></th>');
+			     // console.log("furnishing number " + ", " +data.furnishingnumberList[i]);
+				   $th0.append(data.furnishingnumberList[i]);
+				   $tr.append($th0);
+			    for(var j in data.substagestagedesclist){
+			    	//console.log("substage description" + ", " +data.substagestagedesclist[j]);
+			    	var $td =  $('<td></td>');
+			    	   var flag=false;
+			    	for(var k in data.stageList){
+			    		 //console.log("tmc se jo data aya hai " + ", " +data.stageList[k]);
+			    		 if(data.stageList[k]==data.substagestagedesclist[j] && data.furnishingnumberList[i]==data.originalfurnishingnumberlist[j]){
+			    			 if(data.testingstatusList[k]=="ok")  
+			    				 flag=true;
+			    		 }
+			    		       
+			    	 }
+			    	if(flag==true)
+			    	    $td.append("Y");
+			    	else 
+			    		$td.append("N");
+			    	
+			    	
+			   	$tr.append($td);
+			    	
+			    }	
+			    $table.append($tr);
+			   } 
+			 
+			 
 		 
-		   $('div#divTable').empty().append($table);
+		   $('#divTable').empty().append($table);
 		   
+	}	   
+	else{ 
+	         var $markup=$('<p style="font-size:160%; margin-left:70px; text-align:center ">--x--x--No Data Available--x--x--</p>');
+		   $('#divTable').empty().html($markup); 
+	     
+	}
+
+
+
+
 		   } 
-		//  $('#divTable').html('<link href="css/furnishingStatus.css" rel="stylesheet"  type="text/css" />' );
-	   } 
+		  
+	   
 		   
 	   });
 }

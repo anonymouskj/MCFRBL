@@ -1,8 +1,6 @@
 package ACTION;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -11,18 +9,17 @@ import hibernateConnect.HibernateConfig;
 public class coachtypeclearance {
 	private String Coachtype;
 	private List<String> testingstatusList;
-	public List<String> results;
-	public List<String> results1;
-	public List<Object[]> results2;
-	public List<String>coachtypelist ;
-	public List<String>stagedesclist;
-	public List<String>furnishingnumberList;
-	public List<String>CoachTypeList;
-	public List<String>furnishingassetidList;
+	public List<String> originalfurnishingnumberlist;
+	public List<String>stageList ;
+	public List<String>substagestagedesclist;
+	public  Set<String>furnishingnumberList;
+	public List<String>coachtypelist;
+	
 	
 	
 	
 	public String getcoachDetails(){
+		List<String> results;
 		System.out.println(Coachtype);
 		
 		 Session session =  null;
@@ -39,51 +36,57 @@ public class coachtypeclearance {
 				 return "success";
 				 
 	}
+	
 				 
 	public String getcoachDetails1(){
+	            List<String> results1;
 				 Session session2 =  null;
 				  session2= HibernateConfig.getSession();
-					String hql="select distinct substage_description from furnishing_stage_master where coach_type ='"+Coachtype+"' and next_stage_id!='END'";
+					String hql="select substage_description from furnishing_stage_master where coach_type ='"+Coachtype+"' and next_stage_id!='END' order by stage_sequence ";
 						Query query = session2.createSQLQuery(hql);
 						 results1 = query.list();
-						 stagedesclist=new ArrayList<String>();
+						 substagestagedesclist=new ArrayList<String>();
 						 for(int s1=0;s1<results1.size();s1++)
 						 {    
 							 String description=results1.get(s1);
-							 stagedesclist.add(description);
+							 substagestagedesclist.add(description);
 						 }		 
 						 
+						 
+						 
+						 List<Object[]> results2;
 						 Session session3 =  null;
 						  session3= HibernateConfig.getSession();
-							String hql2="select distinct furnishing_no, p.coach_type, t.furnishing_asset_id,t.testing_status from furnishing_tran a,paint_tran p,furnishing_stage_master f,testing_mobile_clearance T where a.shell_asset_id=p.shell_asset_id and  p.coach_type=f.coach_type and a.furnishing_asset_id=T.furnishing_asset_id and p.coach_type='"+Coachtype+"' order by t.furnishing_asset_id";
+							String hql2="select distinct furnishing_no, t.substage_description, t.furnishing_asset_id,t.testing_status from furnishing_tran a,paint_tran p,furnishing_stage_master f,testing_mobile_clearance T where a.shell_asset_id=p.shell_asset_id and  p.coach_type=f.coach_type and a.furnishing_asset_id=T.furnishing_asset_id and p.coach_type='"+Coachtype+"' order by t.furnishing_asset_id";
 								Query query3 = session3.createSQLQuery(hql2);
 								 results2 = query3.list();
-								 furnishingnumberList=new ArrayList<String>();
-								 CoachTypeList=new ArrayList<String>();
-								 furnishingassetidList=new ArrayList<String>();
+								 originalfurnishingnumberlist=new ArrayList<String>();
+								 //furnishingnumberList = new HashSet<String>();
+								 stageList=new ArrayList<String>();
+								
 								 testingstatusList=new ArrayList<String>();
 								 for(Object[] s:results2)
 									{
 										String furnNo=s[0].toString();
-										String coachType=s[1].toString();
-										String furnassetid=s[2].toString();
+										String substage=s[1].toString();
 										String testingstatus=s[3].toString();
-																				
-										furnishingnumberList.add(furnNo);
-										CoachTypeList.add(coachType);
-										furnishingassetidList.add(furnassetid);
+										originalfurnishingnumberlist.add(furnNo);
+										//furnishingnumberList.add(originalfurnishingnumberlist);
+										stageList.add(substage);
 										testingstatusList.add(testingstatus);
 								        
 									}
+								 furnishingnumberList = new HashSet<String>(originalfurnishingnumberlist);
+								 //System.out.println(furnishingnumberList);
 		
 		return "success";
 	}
-	public List<String> getResults() {
-		return results;
-	}
-	public void setResults(List<String> results) {
-		this.results = results;
-	}
+	
+	
+	
+	
+	
+	
 	public List<String> getCoachtypelist() {
 		return coachtypelist;
 	}
@@ -97,41 +100,53 @@ public class coachtypeclearance {
 		Coachtype = coachtype;
 	}
 	
-	public List<String> getResults1() {
-		return results1;
+public List<String> getTestingstatusList() {
+		return testingstatusList;
 	}
-	public void setResults1(List<String> results1) {
-		this.results1 = results1;
+
+
+	public void setTestingstatusList(List<String> testingstatusList) {
+		this.testingstatusList = testingstatusList;
 	}
-	public List<Object[]> getResults2() {
-		return results2;
+
+
+	public List<String> getStageList() {
+		return stageList;
 	}
-	public void setResults2(List<Object[]> results2) {
-		this.results2 = results2;
+	
+
+	public List<String> getOriginalfurnishingnumberlist() {
+		return originalfurnishingnumberlist;
 	}
-	public List<String> getFurnishingnumberList() {
+
+
+	public void setOriginalfurnishingnumberlist(List<String> originalfurnishingnumberlist) {
+		this.originalfurnishingnumberlist = originalfurnishingnumberlist;
+	}
+
+
+	public void setStageList(List<String> stageList) {
+		this.stageList = stageList;
+	}
+
+
+	public List<String> getSubstagestagedesclist() {
+		return substagestagedesclist;
+	}
+
+
+	public void setSubstagestagedesclist(List<String> substagestagedesclist) {
+		this.substagestagedesclist = substagestagedesclist;
+	}
+
+
+	public Set<String> getFurnishingnumberList() {
 		return furnishingnumberList;
 	}
-	public void setFurnishingnumberList(List<String> furnishingnumberList) {
+
+
+	public void setFurnishingnumberList(Set<String> furnishingnumberList) {
 		this.furnishingnumberList = furnishingnumberList;
-	}
-	public List<String> getCoachTypeList() {
-		return CoachTypeList;
-	}
-	public void setCoachTypeList(List<String> coachTypeList) {
-		CoachTypeList = coachTypeList;
-	}
-	public List<String> getFurnishingassetidList() {
-		return furnishingassetidList;
-	}
-	public void setFurnishingassetidList(List<String> furnishingassetidList) {
-		this.furnishingassetidList = furnishingassetidList;
-	}
-	public List<String> getStagedesclist() {
-		return stagedesclist;
-	}
-	public void setStagedesclist(List<String> stagedesclist) {
-		this.stagedesclist = stagedesclist;
 	}
 	
 	
