@@ -25,5 +25,9 @@
 		<property name="stageSequence" type="integer">
 			<column name="stage_sequence"></column>
 		</property>
+		 <property name="substageshortdesc" type="java.lang.String">
+			<column name="substage_short_desc" length="75"></column>
+		</property>
+		
 	</class>
 </hibernate-mapping>

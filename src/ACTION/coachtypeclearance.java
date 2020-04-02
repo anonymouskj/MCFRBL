@@ -14,6 +14,9 @@ public class coachtypeclearance {
 	public List<String>substagestagedesclist;
 	public  Set<String>furnishingnumberList;
 	public List<String>coachtypelist;
+	public List<String>substage_idList;
+	public List<String>substageidfromtmcList;
+	//public List<String>assetidList;
 	
 	
 	
@@ -39,17 +42,20 @@ public class coachtypeclearance {
 	
 				 
 	public String getcoachDetails1(){
-	            List<String> results1;
+		      List<Object[]>results1;
 				 Session session2 =  null;
 				  session2= HibernateConfig.getSession();
-					String hql="select substage_description from furnishing_stage_master where coach_type ='"+Coachtype+"' and next_stage_id!='END' order by stage_sequence ";
+					String hql="select substage_short_desc,substage_id from furnishing_stage_master where coach_type ='"+Coachtype+"' and next_stage_id!='END' order by stage_sequence ";
 						Query query = session2.createSQLQuery(hql);
 						 results1 = query.list();
 						 substagestagedesclist=new ArrayList<String>();
-						 for(int s1=0;s1<results1.size();s1++)
+						 substage_idList=new ArrayList<String>();
+						 for(Object[] s:results1)
 						 {    
-							 String description=results1.get(s1);
+							 String description=s[0].toString();
+							 String substage_id=s[1].toString();
 							 substagestagedesclist.add(description);
+							 substage_idList.add(substage_id);
 						 }		 
 						 
 						 
@@ -57,22 +63,26 @@ public class coachtypeclearance {
 						 List<Object[]> results2;
 						 Session session3 =  null;
 						  session3= HibernateConfig.getSession();
-							String hql2="select distinct furnishing_no, t.substage_description, t.furnishing_asset_id,t.testing_status from furnishing_tran a,paint_tran p,furnishing_stage_master f,testing_mobile_clearance T where a.shell_asset_id=p.shell_asset_id and  p.coach_type=f.coach_type and a.furnishing_asset_id=T.furnishing_asset_id and p.coach_type='"+Coachtype+"' order by t.furnishing_asset_id";
+							String hql2="select distinct furnishing_no, t.substage_description, t.substage_id, t.furnishing_asset_id,t.testing_status from furnishing_tran a,paint_tran p,furnishing_stage_master f,testing_mobile_clearance T where a.shell_asset_id=p.shell_asset_id and  p.coach_type=f.coach_type and a.furnishing_asset_id=T.furnishing_asset_id and p.coach_type='"+Coachtype+"' order by t.furnishing_asset_id";
 								Query query3 = session3.createSQLQuery(hql2);
 								 results2 = query3.list();
 								 originalfurnishingnumberlist=new ArrayList<String>();
 								 //furnishingnumberList = new HashSet<String>();
 								 stageList=new ArrayList<String>();
-								
+								 substageidfromtmcList=new ArrayList<String>();
+								// assetidList=new ArrayList<String>();
 								 testingstatusList=new ArrayList<String>();
 								 for(Object[] s:results2)
 									{
 										String furnNo=s[0].toString();
 										String substage=s[1].toString();
-										String testingstatus=s[3].toString();
+										String substageid=s[2].toString();
+										String testingstatus=s[4].toString();
 										originalfurnishingnumberlist.add(furnNo);
-										//furnishingnumberList.add(originalfurnishingnumberlist);
+										//furnishingnumberList.add(furnNo);
 										stageList.add(substage);
+										substageidfromtmcList.add(substageid);
+										//assetidList.add(assetid);
 										testingstatusList.add(testingstatus);
 								        
 									}
@@ -137,6 +147,26 @@ public List<String> getTestingstatusList() {
 
 	public void setSubstagestagedesclist(List<String> substagestagedesclist) {
 		this.substagestagedesclist = substagestagedesclist;
+	}
+
+
+	public List<String> getSubstage_idList() {
+		return substage_idList;
+	}
+
+
+	public void setSubstage_idList(List<String> substage_idList) {
+		this.substage_idList = substage_idList;
+	}
+
+
+	public List<String> getSubstageidfromtmcList() {
+		return substageidfromtmcList;
+	}
+
+
+	public void setSubstageidfromtmcList(List<String> substageidfromtmcList) {
+		this.substageidfromtmcList = substageidfromtmcList;
 	}
 
 
