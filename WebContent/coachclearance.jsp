@@ -1,16 +1,35 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     <%@page import="ACTION.coachtypeclearance"%>
+   <%-- <%@page import="ACTION.DispatchedCoaches" %> --%>
+    <%@ page import="model.User" %>
    <%@ page import ="java.util.*"%>
    <%@ page import="java.sql.*" %>
    <%@page import="beans.TestingMobileClearance" %>
+   <%@page import="hibernateConnect.HibernateConfig" %>
+   <%@page import="org.hibernate.*" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+ 
 <title>Insert title here</title>
 </head>
 <style>
+
+.vertical {
+  writing-mode: vertical-rl;
+  transform: rotate(0deg);
+}
+th{
+   text-align: center;
+   padding:6px;
+   font-size: 95%;
+}
+td{
+   text-align: center;
+}
 .Custom{
  position: relative;
  font-family: Arial;
@@ -43,9 +62,13 @@ input[type=submit] {
 	margin-left:10px;
 	outline:none;
 }
+
+}
 </style>
 <body>
-<h1 style="font-size:25px;color:SlateBlue; margin-left:20px;"> Enter CoachType :</h1>
+<div class="row">
+<div class="col-sm-9 col-md-6 col-lg-8">
+<h1 style="font-size:25px;color:SlateBlue; margin-left:20px;margin-right:40px"> Enter CoachType :</h1>
 <%System.out.println("coachclearanace"); 
 coachtypeclearance s=new coachtypeclearance();
 s.getcoachDetails();
@@ -66,7 +89,84 @@ for(String i:substagei) {%>
 </div>
  <br><input type="submit"  value="Confirm" name="SUBMIT" class="submitBtn" id="submitBtn" onClick="return coachtypedetails()" style="margin-left:120px;margin-bottom:40px;">
  
- <script>
+ 
+<input type="submit" value="Back" id="SUBMIT" class="submitBtn" onclick="goBack()" style="margin-left:20px;margin-bottom:40px;">
+
+
+     <div id="1" class="table-responsive"></div>
+
+</div>   
+    
+     <div class="col-sm-3 col-md-6 col-lg-4">
+     <h1 style="font-size:25px;color:SlateBlue; margin-left:100px ; margin-bottom:148px;"> Dispatched Coaches :</h1>
+   <div id="2" class = "table-responsive">
+           
+
+
+<table class="table" style="margin-left:0px;"border="2px solidblack";>
+
+<tr>
+
+
+<th>Coach Type</th>
+<th>Furn No's</th>
+</tr>
+
+
+<%
+Session session1=null;
+
+List<Object[]> DispatchedCoaches = null;
+//HttpSession session_http = ServletActionContext.getRequest().getSession(true);
+ session1 = HibernateConfig.getSession();
+
+
+	String hql="select F.furnishing_asset_id, P.furnishing_no, P.coach_type,furn_stage_date_proc(F.furnishing_asset_id)  from furnishing_tran F, paint_tran P where F.paint_asset_id = P.paint_asset_id and furn_all_stage_status_proc(F.furnishing_asset_id)='Y';";
+	Query query = session1.createSQLQuery(hql);
+	DispatchedCoaches = query.list();  
+     Map<String,List<String>> myMaps = new HashMap<String,List<String>>();  
+     //Map<String,Integer> count = new HashMap<String,Integer>();  
+     //int i=0;
+     for(Object[] item: DispatchedCoaches)
+     {
+
+	String furnishingNo=item[1].toString();
+	String coachType=item[2].toString();
+	
+	if (!myMaps.containsKey(coachType)) {
+        myMaps.put(coachType, new ArrayList<String>());
+	}
+    myMaps.get(coachType).add(furnishingNo);
+    
+	}
+     for (Map.Entry<String, List<String>> entry : myMaps.entrySet()) {
+    	    //System.out.println(entry.getKey() + " = " + entry.getValue());
+    
+
+%>
+
+	
+		
+		<tr>
+	     <td><%=entry.getKey() %></td>
+		<%-- <td> <%=entry.getValue() %></td> --%>
+	 	</tr>
+
+<%
+}
+%> 
+     </table>
+</div>
+      
+     </div>
+  </div>
+ 
+</body>
+
+
+
+
+<script>
 
 function goBack() {
   window.history.back();
@@ -78,76 +178,25 @@ function coachtypedetails(){
 	//var stage=$('input[id=stage]').val();
 	//var stageDesc=stage.toUpperCase();
 
+	
+	
+//dispatch coaches end
     var formdata={Coachtype:Coachtype};
 	$.ajax({
 		url:"coachtypeclearance",
 		type:'POST',
 		data:formdata,
+		async:false,
 	   success: function(data){ 
-		    //if(data.stagedesclist.length!=0 && data.furnishingnumberList.length!=0){
-		    	
-	   /*  var $table  =  $('<table style="margin-left:20px;"border="2px solidblack"></table>');
-		   var $tr =  $('<tr style="padding-left:5px;padding-right:5px;"> </tr>');
-		   var $th0 =  $('<th>FURNISHING NO:</th>');
-		   $tr.append($th0);
-		   //$table.append($tr);
-		 for(var i in data.substagestagedesclist){
-		 var $th=$('<th  style="padding-left:5px;padding-right:5px;"> </th>');
-		// var $td =  $('<td> </td>');
-		 $th.append(data.substagestagedesclist[i]);
-		 $tr.append($th);
-		 // $table.append($tr);
-		   }
-		 $table.append($tr);
-		 
-		 
-		
-	 for(var p in data.furnishingnumberList){
-			 var $tr =  $('<tr></tr>');
-		 var $td =  $('<td></td>');
-			 $td.append(data.furnishingnumberList[p]);
-			 $tr.append($td);
-			//  $table.append($tr);
-			   //} 
-		    
-		   ///tried something not working
-		    
-		for(var i in data.substagestagedesclist) {
-			//for(var j in data.furnishingnumberList){
-				// var $tr =  $('<tr></tr>');
-			
-				for(var k in data.stageList){
-					 var $td =  $('<td></td>');
-					if(data.stageList[k]==data.substagestagedesclist[i]){
-						 if(data.testingstatusList[k]=="not_ok"){
-							$td.append("N");
-					}
-						 else 
-							 $td.append("Y");
-			}
-				else {
-					$td.append("N");
-				}
-					          
-					    
-					$tr.append($td);
-			}
-				//$tr.append($td);
-				
-		//}
-			//$table.append($tr);
-	}
-		$table.append($tr);
-} */
-	//it 
+		   /* */ 
 	if(data.substagestagedesclist.length!=0 && data.furnishingnumberList.length!=0){
-		  var $table  =  $('<table style="margin-left:20px;"border="2px solidblack"></table>');
-		    var $tr =  $('<tr style="padding-left:5px;padding-right:5px;"> </tr>');
-		    var $th0 =  $('<th>FURNISHING NO:</th>');
+		  var $table  =  $('<table class="table" style="margin-left:20px;"border="2px solidblack"; ></table>');
+		    var $tr =  $('<tr> </tr>');
+		    var $th0 =  $('<th class="vertical" >Furn No.</th>');
 			 $tr.append($th0);
 			   //$table.append($tr);
 			 for(var i in data.substagestagedesclist){
-			 var $th=$('<th  style="padding-left:5px;padding-right:5px;"> </th>');
+			 var $th=$('<th class="vertical" > </th>');
 			 $th.append(data.substagestagedesclist[i]);
 			 $tr.append($th);
 			 }
@@ -160,13 +209,13 @@ function coachtypedetails(){
 			     // console.log("furnishing number " + ", " +data.furnishingnumberList[i]);
 				   $th0.append(data.furnishingnumberList[i]);
 				   $tr.append($th0);
-			    for(var j in data.substagestagedesclist){
+			    for(var j in data.substage_idList){
 			    	//console.log("substage description" + ", " +data.substagestagedesclist[j]);
 			    	var $td =  $('<td></td>');
 			    	   var flag=false;
-			    	for(var k in data.stageList){
+			    	for(var k in data.substageidfromtmcList){
 			    		 //console.log("tmc se jo data aya hai " + ", " +data.stageList[k]);
-			    		 if(data.stageList[k]==data.substagestagedesclist[j] && data.furnishingnumberList[i]==data.originalfurnishingnumberlist[j]){
+			    		 if(data.substageidfromtmcList[k]==data.substage_idList[j] && data.furnishingnumberList[i]==data.originalfurnishingnumberlist[k]){
 			    			 if(data.testingstatusList[k]=="ok")  
 			    				 flag=true;
 			    		 }
@@ -186,12 +235,12 @@ function coachtypedetails(){
 			 
 			 
 		 
-		   $('#divTable').empty().append($table);
+		   $('#1').empty().append($table);
 		   
 	}	   
 	else{ 
-	         var $markup=$('<p style="font-size:160%; margin-left:70px; text-align:center ">--x--x--No Data Available--x--x--</p>');
-		   $('#divTable').empty().html($markup); 
+	         var $markup=$('<p style="font-size:160%; margin-left:40px; text-align:center ">--x--x--No Data Available--x--x--</p>');
+		   $('#1').empty().html($markup); 
 	     
 	}
 
@@ -206,9 +255,4 @@ function coachtypedetails(){
 }
 	
 </script>
-<input type="submit" value="Back" id="SUBMIT" class="submitBtn" onclick="goBack()" style="margin-left:20px;margin-bottom:40px;">
-<div id="nodata" style="font-size:23px;text-align:center;"></div>
-<div id="divTable" class="divTable"></div></div>  
-
-</body>
 </html>

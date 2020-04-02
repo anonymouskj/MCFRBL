@@ -9,14 +9,14 @@ public class FurnishingStageMaster implements java.io.Serializable{
 	private String previousStageId;
 	private String nextStageId;
 	private Integer stageSequence;
-	
+	private String substageshortdesc;
 	public FurnishingStageMaster()
 	{
 		
 	}
 
 	public FurnishingStageMaster(String substageId, String coachType, String substageDescription,
-			String previousStageId, String nextStageId, Integer stageSequence) {
+			String previousStageId, String nextStageId, Integer stageSequence,String substageshortdesc) {
 		super();
 		this.substageId = substageId;
 		this.coachType = coachType;
@@ -24,7 +24,8 @@ public class FurnishingStageMaster implements java.io.Serializable{
 		this.previousStageId = previousStageId;
 		this.nextStageId = nextStageId;
 		this.stageSequence = stageSequence;
-	}
+		this.substageshortdesc =substageshortdesc;
+	}  
 
 	public String getSubstageId() {
 		return substageId;
@@ -73,5 +74,14 @@ public class FurnishingStageMaster implements java.io.Serializable{
 	public void setStageSequence(Integer stageSequence) {
 		this.stageSequence = stageSequence;
 	}
+
+	public String getSubstageshortdesc() {
+		return substageshortdesc;
+	}
+
+	public void setSubstageshortdesc(String substageshortdesc) {
+		this.substageshortdesc = substageshortdesc;
+	}
+
 	
 }

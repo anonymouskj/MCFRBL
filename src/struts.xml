@@ -714,6 +714,10 @@
 <action name="coachtypeclearance" class="ACTION.coachtypeclearance" method="getcoachDetails1">
 			<result name="success" type="json"/>
 		</action>
+<action name="DispatchedCoaches" class="ACTION.DispatchedCoaches" method="getDispatchedDetails">
+			<result name="success" type="json"/>
+		</action>		
+		
 <action name="interval" class="ACTION.Interval" method="getintervalDetails">
 <result name="success" type="json" />
 </action>

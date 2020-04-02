@@ -82,7 +82,7 @@
 		testingStatus=s[9].toString();
 		if(testingStatus==null)
 			testingStatus="";
-		System.out.println("Testing Status: "+testingStatus);
+		//System.out.println("Testing Status: "+testingStatus);
 		Object remarks=s[10];   if(remarks!=null) { remark=remarks.toString();}
 		
 		%>
