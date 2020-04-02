@@ -149,7 +149,7 @@ List<Object[]> DispatchedCoaches = null;
 		
 		<tr>
 	     <td><%=entry.getKey() %></td>
-		<%-- <td> <%=entry.getValue() %></td> --%>
+	   <td> <%=entry.getValue() %></td>
 	 	</tr>
 
 <%
@@ -246,7 +246,7 @@ function coachtypedetails(){
 
 
 
-
+	
 		   } 
 		  
 	   
